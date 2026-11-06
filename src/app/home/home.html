@@ -1,0 +1,38 @@
+<main class="home">
+	<section class="tasks-section" aria-labelledby="tasks-title">
+		<div class="tasks-heading">
+			<div>
+				<p class="eyebrow">GERENCIAMENTO</p>
+				<h1 id="tasks-title">Minhas tarefas</h1>
+			</div>
+			<a class="add-button" routerLink="/nova-tarefa">Adicionar tarefa</a>
+		</div>
+
+		<p class="task-count">{{ tarefas().length }} tarefas</p>
+
+		@if (erro()) {
+			<p class="error-message" role="alert">{{ erro() }}</p>
+		}
+
+		@if (carregando()) {
+			<p class="empty-state" role="status">Carregando tarefas...</p>
+		} @else {
+			<div class="task-grid">
+				@for (tarefa of tarefas(); track tarefa.id) {
+					<article class="task-card">
+						<div class="card-heading">
+							<h2>{{ tarefa.nome }}</h2>
+							<span [class]="'priority priority-' + tarefa.prioridade">{{ tarefa.prioridade }}</span>
+						</div>
+						<div class="task-details">
+							<span>{{ tarefa.categoria }}</span>
+							<time [attr.datetime]="tarefa.dataLimite">Data de Vencimento: {{ tarefa.dataLimite }}</time>
+						</div>
+					</article>
+				} @empty {
+					<p class="empty-state">Nenhuma tarefa cadastrada.</p>
+				}
+			</div>
+		}
+	</section>
+</main>

@@ -1,0 +1,61 @@
+<section class="task-form" aria-labelledby="task-form-title">
+	<div class="form-heading">
+		<div>
+			<p class="eyebrow">NOVA TAREFA</p>
+			<h2 id="task-form-title">O que precisa ser feito?</h2>
+		</div>
+		<button class="close-button" type="button" aria-label="Voltar para tarefas" (click)="cancelar()">×</button>
+	</div>
+
+	<form #taskForm="ngForm" (ngSubmit)="submit(taskForm)" novalidate>
+		<div class="field">
+			<label for="task-name">Nome</label>
+			<input #nome="ngModel" id="task-name" name="nome" type="text" [(ngModel)]="tarefa.nome" placeholder="Ex.: Organizar a semana" required />
+			@if (nome.invalid && (nome.touched || taskForm.submitted)) {
+				<span class="field-error">Informe o nome da tarefa.</span>
+			}
+		</div>
+
+		<div class="field-row">
+			<div class="field">
+				<label for="task-priority">Prioridade</label>
+				<select id="task-priority" name="prioridade" [(ngModel)]="tarefa.prioridade" required>
+					<option value="baixa">Baixa</option>
+					<option value="media">Média</option>
+					<option value="alta">Alta</option>
+				</select>
+			</div>
+
+			<div class="field">
+				<label for="task-deadline">Data limite</label>
+				<input #dataLimite="ngModel" id="task-deadline" name="dataLimite" type="date" [(ngModel)]="tarefa.dataLimite" required />
+				@if (dataLimite.invalid && (dataLimite.touched || taskForm.submitted)) {
+					<span class="field-error">Escolha uma data limite.</span>
+				}
+			</div>
+		</div>
+
+		<fieldset class="field category-field">
+			<legend>Categoria</legend>
+			<div class="category-options">
+				@for (category of categories; track category.value) {
+					<label class="category-option" [class.selected]="tarefa.categoria === category.value">
+						<input type="radio" name="categoria" [(ngModel)]="tarefa.categoria" [value]="category.value" />
+						<span>{{ category.label }}</span>
+					</label>
+				}
+			</div>
+		</fieldset>
+
+		@if (errorMessage()) {
+			<p class="form-error" role="alert">{{ errorMessage() }}</p>
+		}
+
+		<div class="form-actions">
+			<button class="secondary-button" type="button" (click)="cancelar()">Cancelar</button>
+			<button class="submit-button" type="submit" [disabled]="saving()">
+				{{ saving() ? 'Salvando...' : 'Adicionar tarefa' }}
+			</button>
+		</div>
+	</form>
+</section>
