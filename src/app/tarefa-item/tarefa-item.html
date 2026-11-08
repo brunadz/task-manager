@@ -1,0 +1,25 @@
+<article class="task-card" [class.completed]="tarefa().concluida ?? false">
+	<div class="card-heading">
+		<h2>{{ tarefa().nome }}</h2>
+		<span [class]="'priority priority-' + tarefa().prioridade">{{ tarefa().prioridade }}</span>
+	</div>
+	<div class="task-details">
+		<span>{{ tarefa().categoria }}</span>
+		<time [attr.datetime]="tarefa().dataLimite">Data de Vencimento: {{ tarefa().dataLimite }}</time>
+	</div>
+	<div class="task-actions">
+		<label class="completion-toggle">
+			<input
+				type="checkbox"
+				[checked]="tarefa().concluida ?? false"
+				[attr.aria-label]="(tarefa().concluida ? 'Reabrir' : 'Marcar como concluída') + ' a tarefa ' + tarefa().nome"
+				(change)="alternarConclusao($event)"
+			/>
+			<span>Concluída</span>
+		</label>
+		<div class="task-action-buttons">
+			<button type="button" class="edit-button" [attr.aria-label]="'Editar tarefa ' + tarefa().nome" (click)="editar.emit(tarefa())">Editar</button>
+			<button type="button" class="delete-button" [attr.aria-label]="'Excluir tarefa ' + tarefa().nome" (click)="excluir.emit(tarefa())">Excluir</button>
+		</div>
+	</div>
+</article>

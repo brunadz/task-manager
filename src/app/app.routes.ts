@@ -8,5 +8,10 @@ export const routes: Routes = [
 		loadComponent: () => import('./tarefa-form/tarefa-form').then((module) => module.TarefaForm),
 		title: 'Nova tarefa',
 	},
+	{
+		path: 'editar-tarefa/:id',
+		loadComponent: () => import('./tarefa-form/tarefa-form').then((module) => module.TarefaForm),
+		title: 'Editar tarefa',
+	},
 	{ path: '**', redirectTo: '' },
 ];
