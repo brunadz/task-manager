@@ -1,12 +1,18 @@
 <section class="task-form" aria-labelledby="task-form-title">
 	<div class="form-heading">
 		<div>
-			<p class="eyebrow">NOVA TAREFA</p>
-			<h2 id="task-form-title">O que precisa ser feito?</h2>
+			<p class="eyebrow">{{ tarefaId ? 'EDITAR TAREFA' : 'NOVA TAREFA' }}</p>
+			<h2 id="task-form-title">{{ tarefaId ? 'Atualize os dados da tarefa' : 'O que precisa ser feito?' }}</h2>
 		</div>
 		<button class="close-button" type="button" aria-label="Voltar para tarefas" (click)="cancelar()">×</button>
 	</div>
 
+	@if (loading()) {
+		<p role="status">Carregando tarefa...</p>
+	} @else if (tarefaId && !tarefaCarregada()) {
+		<p class="form-error" role="alert">{{ errorMessage() }}</p>
+		<button class="secondary-button" type="button" (click)="cancelar()">Voltar para tarefas</button>
+	} @else {
 	<form #taskForm="ngForm" (ngSubmit)="submit(taskForm)" novalidate>
 		<div class="field">
 			<label for="task-name">Nome</label>
@@ -54,8 +60,9 @@
 		<div class="form-actions">
 			<button class="secondary-button" type="button" (click)="cancelar()">Cancelar</button>
 			<button class="submit-button" type="submit" [disabled]="saving()">
-				{{ saving() ? 'Salvando...' : 'Adicionar tarefa' }}
+				{{ saving() ? 'Salvando...' : tarefaId ? 'Salvar alterações' : 'Adicionar tarefa' }}
 			</button>
 		</div>
 	</form>
+	}
 </section>

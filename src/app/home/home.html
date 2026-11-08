@@ -4,11 +4,52 @@
 			<div>
 				<p class="eyebrow">GERENCIAMENTO</p>
 				<h1 id="tasks-title">Minhas tarefas</h1>
+				<p class="today-date">{{ dataHoje() }}</p>
 			</div>
 			<a class="add-button" routerLink="/nova-tarefa">Adicionar tarefa</a>
 		</div>
 
-		<p class="task-count">{{ tarefas().length }} tarefas</p>
+		<p class="task-count">
+			@if (temFiltrosAtivos()) {
+				Mostrando {{ tarefasFiltradas().length }} de {{ tarefas().length }} tarefas
+			} @else {
+				{{ tarefas().length }} tarefas
+			}
+		</p>
+
+		<section class="task-filters" aria-label="Filtros de tarefas">
+			<div class="filter-field search-field">
+				<label for="task-search">Buscar por nome</label>
+				<input
+					id="task-search"
+					type="search"
+					[value]="busca()"
+					placeholder="Digite o nome da tarefa"
+					(input)="atualizarBusca($event)"
+				/>
+			</div>
+			<div class="filter-field">
+				<label for="priority-filter">Prioridade</label>
+				<select id="priority-filter" [value]="prioridadeFiltro()" (change)="atualizarPrioridade($event)">
+					<option value="">Todas</option>
+					<option value="baixa">Baixa</option>
+					<option value="media">Média</option>
+					<option value="alta">Alta</option>
+				</select>
+			</div>
+			<div class="filter-field">
+				<label for="category-filter">Categoria</label>
+				<select id="category-filter" [value]="categoriaFiltro()" (change)="atualizarCategoria($event)">
+					<option value="">Todas</option>
+					<option value="domestico">Doméstico</option>
+					<option value="pessoal">Pessoal</option>
+					<option value="trabalho">Trabalho</option>
+				</select>
+			</div>
+			@if (temFiltrosAtivos()) {
+				<button class="clear-filters" type="button" (click)="limparFiltros()">Limpar filtros</button>
+			}
+		</section>
 
 		@if (erro()) {
 			<p class="error-message" role="alert">{{ erro() }}</p>
@@ -17,22 +58,47 @@
 		@if (carregando()) {
 			<p class="empty-state" role="status">Carregando tarefas...</p>
 		} @else {
-			<div class="task-grid">
-				@for (tarefa of tarefas(); track tarefa.id) {
-					<article class="task-card">
-						<div class="card-heading">
-							<h2>{{ tarefa.nome }}</h2>
-							<span [class]="'priority priority-' + tarefa.prioridade">{{ tarefa.prioridade }}</span>
-						</div>
-						<div class="task-details">
-							<span>{{ tarefa.categoria }}</span>
-							<time [attr.datetime]="tarefa.dataLimite">Data de Vencimento: {{ tarefa.dataLimite }}</time>
-						</div>
-					</article>
-				} @empty {
-					<p class="empty-state">Nenhuma tarefa cadastrada.</p>
-				}
-			</div>
+			<section class="task-group" aria-labelledby="in-progress-title">
+				<div class="group-heading">
+					<h2 id="in-progress-title">Em andamento</h2>
+					<span>{{ tarefasEmAndamento().length }}</span>
+				</div>
+				<div class="task-grid">
+					@for (tarefa of tarefasEmAndamento(); track tarefa.id) {
+						<app-tarefa-item
+							[tarefa]="tarefa"
+							(editar)="editarTarefa($event)"
+							(excluir)="excluirTarefa($event)"
+							(conclusaoAlterada)="atualizarConclusao($event)"
+						/>
+					} @empty {
+						<p class="empty-state">
+							{{ temFiltrosAtivos() ? 'Nenhuma tarefa em andamento corresponde aos filtros.' : 'Nenhuma tarefa em andamento.' }}
+						</p>
+					}
+				</div>
+			</section>
+
+			<section class="task-group" aria-labelledby="completed-title">
+				<div class="group-heading">
+					<h2 id="completed-title">Feitas</h2>
+					<span>{{ tarefasFeitas().length }}</span>
+				</div>
+				<div class="task-grid">
+					@for (tarefa of tarefasFeitas(); track tarefa.id) {
+						<app-tarefa-item
+							[tarefa]="tarefa"
+							(editar)="editarTarefa($event)"
+							(excluir)="excluirTarefa($event)"
+							(conclusaoAlterada)="atualizarConclusao($event)"
+						/>
+					} @empty {
+						<p class="empty-state">
+							{{ temFiltrosAtivos() ? 'Nenhuma tarefa feita corresponde aos filtros.' : 'Nenhuma tarefa feita ainda.' }}
+						</p>
+					}
+				</div>
+			</section>
 		}
 	</section>
 </main>

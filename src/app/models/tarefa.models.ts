@@ -7,4 +7,5 @@ export interface Tarefa {
 	prioridade: PrioridadeTarefa;
 	dataLimite: string;
 	categoria: CategoriaTarefa;
+	concluida?: boolean;
 }

@@ -1,25 +1,20 @@
 {
-  "listas": [
-    {
-      "nome": "oi",
-      "id": "z2eqWWVV3yc"
-    }
-  ],
   "tarefas": [
     {
-      "nome": "teste",
-      "prioridade": "media",
-      "dataLimite": "2026-11-11",
-      "categoria": "domestico",
-      "listaId": "z2eqWWVV3yc",
-      "id": "dTtGk9Z9c5w"
-    },
-    {
-      "nome": "teste 2",
+      "nome": "teste edicao tarefa",
       "prioridade": "alta",
       "dataLimite": "2026-11-23",
       "categoria": "pessoal",
-      "id": "_C5xu-clFcw"
+      "id": "_C5xu-clFcw",
+      "concluida": false
+    },
+    {
+      "nome": "teste 2",
+      "prioridade": "media",
+      "dataLimite": "2026-11-17",
+      "categoria": "trabalho",
+      "concluida": false,
+      "id": "bOD_8Cj22e8"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
