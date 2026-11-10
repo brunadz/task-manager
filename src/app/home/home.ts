@@ -1,6 +1,6 @@
 import { afterNextRender, Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CategoriaTarefa, PrioridadeTarefa, Tarefa } from '../models/tarefa.models';
+import { CategoriaTarefa, ITarefaComConclusao, PrioridadeTarefa } from '../models/tarefa.model';
 import { TarefaItem } from '../tarefa-item/tarefa-item';
 import { TarefaService } from '../tarefa-form/tarefa-form.service';
 
@@ -14,18 +14,21 @@ export class Home {
   private readonly tarefaService = inject(TarefaService);
   private readonly router = inject(Router);
 
-  readonly tarefas = signal<Tarefa[]>([]);
+  readonly tarefas = signal<ITarefaComConclusao[]>([]);
   readonly busca = signal('');
+  readonly dataFiltro = signal('');
   readonly prioridadeFiltro = signal<PrioridadeTarefa | ''>('');
   readonly categoriaFiltro = signal<CategoriaTarefa | ''>('');
   readonly tarefasFiltradas = computed(() => {
     const busca = this.busca().trim().toLocaleLowerCase('pt-BR');
+    const data = this.dataFiltro();
     const prioridade = this.prioridadeFiltro();
     const categoria = this.categoriaFiltro();
 
     return this.tarefas().filter(
       (tarefa) =>
         (!busca || tarefa.nome.toLocaleLowerCase('pt-BR').includes(busca)) &&
+        (!data || tarefa.data === data) &&
         (!prioridade || tarefa.prioridade === prioridade) &&
         (!categoria || tarefa.categoria === categoria),
     );
@@ -33,7 +36,7 @@ export class Home {
   readonly tarefasEmAndamento = computed(() => this.tarefasFiltradas().filter((tarefa) => !tarefa.concluida));
   readonly tarefasFeitas = computed(() => this.tarefasFiltradas().filter((tarefa) => tarefa.concluida === true));
   readonly temFiltrosAtivos = computed(
-    () => !!this.busca().trim() || !!this.prioridadeFiltro() || !!this.categoriaFiltro(),
+    () => !!this.busca().trim() || !!this.dataFiltro() || !!this.prioridadeFiltro() || !!this.categoriaFiltro(),
   );
   readonly dataHoje = signal('');
   readonly carregando = signal(true);
@@ -70,6 +73,10 @@ export class Home {
     this.busca.set((event.currentTarget as HTMLInputElement).value);
   }
 
+  atualizarDataFiltro(event: Event): void {
+    this.dataFiltro.set((event.currentTarget as HTMLInputElement).value);
+  }
+
   atualizarPrioridade(event: Event): void {
     const valor = (event.currentTarget as HTMLSelectElement).value;
     if (valor === '' || valor === 'baixa' || valor === 'media' || valor === 'alta') {
@@ -86,20 +93,26 @@ export class Home {
 
   limparFiltros(): void {
     this.busca.set('');
+    this.dataFiltro.set('');
     this.prioridadeFiltro.set('');
     this.categoriaFiltro.set('');
   }
 
-  editarTarefa(tarefa: Tarefa): void {
-    if (tarefa.id === undefined) {
+  editarTarefa(tarefa: ITarefaComConclusao): void {
+    if (!tarefa.id) {
       return;
     }
 
     this.router.navigate(['/editar-tarefa', tarefa.id]);
   }
 
-  excluirTarefa(tarefa: Tarefa): void {
-    if (tarefa.id === undefined) {
+  excluirTarefa(tarefa: ITarefaComConclusao): void {
+    if (!tarefa.id) {
+      return;
+    }
+
+    const confirmar = globalThis.confirm(`Deseja realmente excluir a tarefa "${tarefa.nome}"? Esta ação não pode ser desfeita.`);
+    if (!confirmar) {
       return;
     }
 
@@ -109,8 +122,8 @@ export class Home {
     });
   }
 
-  atualizarConclusao(tarefaAtualizada: Tarefa): void {
-    if (tarefaAtualizada.id === undefined) {
+  atualizarConclusao(tarefaAtualizada: ITarefaComConclusao): void {
+    if (!tarefaAtualizada.id) {
       return;
     }
 

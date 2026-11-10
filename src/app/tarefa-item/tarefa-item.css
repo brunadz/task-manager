@@ -1,18 +1,29 @@
 .task-card {
 	min-width: 0;
-	padding: 1rem;
-	border: 1px solid #d8e2dc;
-	border-radius: 4px;
-	background: #fff;
+	padding: 1.25rem;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-card);
+	background: var(--color-surface);
+	box-shadow: var(--shadow-soft);
+	transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.task-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 16px 40px rgba(29, 29, 31, 0.1);
 }
 
 .task-card.completed {
-	border-color: #9bb9a1;
-	background: #f3f8f4;
+	border-color: var(--color-blue);
+	background: linear-gradient(135deg, rgba(189, 224, 254, 0.35), rgba(255, 255, 255, 0.92));
+}
+
+.task-card.overdue {
+	border-color: #e9a0a0;
 }
 
 .task-card.completed .card-heading h2 {
-	color: #52665a;
+	color: var(--color-muted);
 	text-decoration: line-through;
 }
 
@@ -27,7 +38,7 @@
 .card-heading h2 {
 	min-width: 0;
 	margin: 0;
-	color: #17241c;
+	color: var(--color-ink);
 	font-size: 1rem;
 	font-weight: 650;
 }
@@ -35,32 +46,36 @@
 .priority {
 	flex: 0 0 auto;
 	padding: 0.2rem 0.45rem;
-	border-radius: 3px;
+	border-radius: 999px;
 	font-size: 0.75rem;
 	font-weight: 650;
 	text-transform: capitalize;
 }
 
 .priority-baixa {
-	background: #e6f1e8;
-	color: #245c34;
+	background: var(--color-blue-soft);
+	color: #243746;
 }
 
 .priority-media {
-	background: #fff0d9;
-	color: #754a0d;
+	background: var(--color-pink);
+	color: #642b41;
 }
 
 .priority-alta {
-	background: #f8e5e2;
-	color: #8c3028;
+	background: var(--color-pink-soft);
+	color: #642b41;
 }
 
 .task-details {
 	flex-wrap: wrap;
 	margin-top: 1rem;
-	color: #607066;
+	color: var(--color-muted);
 	font-size: 0.85rem;
+}
+
+.task-category {
+	text-transform: capitalize;
 }
 
 .task-actions {
@@ -79,7 +94,7 @@
 }
 
 .completion-toggle {
-	color: #405448;
+	color: #454549;
 	font-size: 0.85rem;
 }
 
@@ -87,31 +102,31 @@
 	width: 18px;
 	height: 18px;
 	margin: 0;
-	accent-color: #166534;
+	accent-color: #4b657e;
 }
 
 .task-action-buttons button {
 	min-height: 36px;
 	padding: 0.4rem 0.65rem;
 	border: 1px solid transparent;
-	border-radius: 4px;
+	border-radius: 999px;
 	font: inherit;
 	font-size: 0.85rem;
 	cursor: pointer;
 }
 
 .edit-button {
-	background: #e6f1e8;
-	color: #245c34;
+	background: var(--color-blue-soft);
+	color: #243746;
 }
 
 .delete-button {
-	background: #f8e5e2;
-	color: #8c3028;
+	background: var(--color-pink-soft);
+	color: #642b41;
 }
 
 .task-action-buttons button:focus-visible,
 .completion-toggle input:focus-visible {
-	outline: 3px solid #d18b36;
+	outline: 3px solid #765d82;
 	outline-offset: 2px;
 }

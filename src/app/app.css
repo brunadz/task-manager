@@ -1,5 +1,8 @@
 :host {
 	display: block;
 	min-height: 100vh;
-	background: #f3f6f3;
+	background:
+		radial-gradient(ellipse at 8% 0%, rgba(255, 200, 221, 0.32), transparent 34rem),
+		radial-gradient(ellipse at 92% 10%, rgba(189, 224, 254, 0.38), transparent 38rem),
+		#f7f7f9;
 }

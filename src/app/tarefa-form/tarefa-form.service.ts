@@ -1,27 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Tarefa } from '../models/tarefa.models';
+import { ITarefaComConclusao } from '../models/tarefa.model';
 
 @Injectable({ providedIn: 'root' })
 export class TarefaService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = 'http://localhost:3000/tarefas';
 
-  getAllTarefas(): Observable<Tarefa[]> {
-    return this.http.get<Tarefa[]>(this.apiUrl);
+  getAllTarefas(): Observable<ITarefaComConclusao[]> {
+    return this.http.get<ITarefaComConclusao[]>(this.apiUrl);
   }
 
-  createTarefa(tarefa: Omit<Tarefa, 'id'>): Observable<Tarefa> {
-    return this.http.post<Tarefa>(this.apiUrl, tarefa);
+  createTarefa(tarefa: Omit<ITarefaComConclusao, 'id'>): Observable<ITarefaComConclusao> {
+    return this.http.post<ITarefaComConclusao>(this.apiUrl, tarefa);
   }
 
-  getTarefaById(id: string | number): Observable<Tarefa> {
-    return this.http.get<Tarefa>(`${this.apiUrl}/${id}`);
+  getTarefaById(id: string): Observable<ITarefaComConclusao> {
+    return this.http.get<ITarefaComConclusao>(`${this.apiUrl}/${id}`);
   }
 
-  updateTarefa(id: string | number, tarefa: Omit<Tarefa, 'id'>): Observable<Tarefa> {
-    return this.http.put<Tarefa>(`${this.apiUrl}/${id}`, tarefa);
+  updateTarefa(id: string, tarefa: Omit<ITarefaComConclusao, 'id'>): Observable<ITarefaComConclusao> {
+    return this.http.put<ITarefaComConclusao>(`${this.apiUrl}/${id}`, tarefa);
   }
 
   deleteTarefa(id: string | number): Observable<void> {

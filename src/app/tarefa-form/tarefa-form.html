@@ -17,9 +17,7 @@
 		<div class="field">
 			<label for="task-name">Nome</label>
 			<input #nome="ngModel" id="task-name" name="nome" type="text" [(ngModel)]="tarefa.nome" placeholder="Ex.: Organizar a semana" required />
-			@if (nome.invalid && (nome.touched || taskForm.submitted)) {
-				<span class="field-error">Informe o nome da tarefa.</span>
-			}
+			<span class="field-error">{{ nome.invalid && (nome.touched || taskForm.submitted) ? 'Informe o nome da tarefa.' : '' }}</span>
 		</div>
 
 		<div class="field-row">
@@ -30,14 +28,17 @@
 					<option value="media">Média</option>
 					<option value="alta">Alta</option>
 				</select>
+				<span class="field-error" aria-hidden="true"></span>
 			</div>
 
 			<div class="field">
-				<label for="task-deadline">Data limite</label>
-				<input #dataLimite="ngModel" id="task-deadline" name="dataLimite" type="date" [(ngModel)]="tarefa.dataLimite" required />
-				@if (dataLimite.invalid && (dataLimite.touched || taskForm.submitted)) {
-					<span class="field-error">Escolha uma data limite.</span>
-				}
+				<label for="task-deadline">Vencimento da Tarefa</label>
+				<div class="date-picker-control">
+					<span class="date-picker-value" aria-hidden="true">{{ formatarData(tarefa.data) }}</span>
+					<span class="date-picker-icon" aria-hidden="true"></span>
+					<input #data="ngModel" class="date-picker-input" id="task-deadline" name="data" type="date" lang="pt-BR" (keydown)="bloquearDigitacaoData($event)" (paste)="bloquearColagemData($event)" [(ngModel)]="tarefa.data" required />
+				</div>
+				<span class="field-error">{{ data.invalid && (data.touched || taskForm.submitted) ? 'Escolha uma data de vencimento.' : '' }}</span>
 			</div>
 		</div>
 

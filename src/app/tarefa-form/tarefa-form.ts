@@ -1,8 +1,16 @@
 import { afterNextRender, Component, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoriaTarefa, Tarefa } from '../models/tarefa.models';
+import { CategoriaTarefa, createITarefa, ITarefaComConclusao } from '../models/tarefa.model';
 import { TarefaService } from './tarefa-form.service';
+
+function dataLocalDeHoje(): string {
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+  const dia = String(hoje.getDate()).padStart(2, '0');
+  return `${ano}-${mes}-${dia}`;
+}
 
 @Component({
   imports: [FormsModule],
@@ -20,10 +28,11 @@ export class TarefaForm {
   readonly tarefaCarregada = signal(false);
   readonly errorMessage = signal('');
   private tarefaId: string | null = null;
-  readonly tarefa: Omit<Tarefa, 'id' | 'listaId'> = {
+  readonly tarefa: ITarefaComConclusao = {
+    ...createITarefa(),
     nome: '',
     prioridade: 'media',
-    dataLimite: '',
+    data: dataLocalDeHoje(),
     categoria: 'domestico',
     concluida: false,
   };
@@ -63,6 +72,24 @@ export class TarefaForm {
     this.router.navigateByUrl('/');
   }
 
+  bloquearDigitacaoData(event: KeyboardEvent): void {
+    if (event.key.length === 1 || event.key === 'Backspace' || event.key === 'Delete') {
+      event.preventDefault();
+    }
+  }
+
+  bloquearColagemData(event: ClipboardEvent): void {
+    event.preventDefault();
+  }
+
+  formatarData(dataISO: string): string {
+    return new Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).format(new Date(`${dataISO}T00:00:00`));
+  }
+
   submit(form: NgForm): void {
     if (form.invalid) {
       form.control.markAllAsTouched();
@@ -72,8 +99,11 @@ export class TarefaForm {
     this.saving.set(true);
     this.errorMessage.set('');
     const tarefa = {
-      ...this.tarefa,
       nome: this.tarefa.nome.trim(),
+      data: this.tarefa.data,
+      prioridade: this.tarefa.prioridade,
+      categoria: this.tarefa.categoria,
+      concluida: this.tarefa.concluida,
     };
     const request = this.tarefaId
       ? this.tarefaService.updateTarefa(this.tarefaId, tarefa)

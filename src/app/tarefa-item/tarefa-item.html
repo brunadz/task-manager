@@ -1,11 +1,11 @@
-<article class="task-card" [class.completed]="tarefa().concluida ?? false">
+<article class="task-card" [class.completed]="tarefa().concluida ?? false" [class.overdue]="atrasada()">
 	<div class="card-heading">
 		<h2>{{ tarefa().nome }}</h2>
 		<span [class]="'priority priority-' + tarefa().prioridade">{{ tarefa().prioridade }}</span>
 	</div>
 	<div class="task-details">
-		<span>{{ tarefa().categoria }}</span>
-		<time [attr.datetime]="tarefa().dataLimite">Data de Vencimento: {{ tarefa().dataLimite }}</time>
+		<span class="task-category">{{ formatarCategoria(tarefa().categoria) }}</span>
+		<time [attr.datetime]="tarefa().data">Vencimento: {{ formatarData(tarefa().data) }}</time>
 	</div>
 	<div class="task-actions">
 		<label class="completion-toggle">

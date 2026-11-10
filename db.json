@@ -1,20 +1,52 @@
 {
   "tarefas": [
     {
-      "nome": "teste edicao tarefa",
-      "prioridade": "alta",
-      "dataLimite": "2026-11-23",
-      "categoria": "pessoal",
-      "id": "_C5xu-clFcw",
-      "concluida": false
+      "nome": "organizar armário",
+      "prioridade": "baixa",
+      "data": "2026-11-08",
+      "categoria": "domestico",
+      "concluida": true,
+      "id": "6cN1kxpJeak"
     },
     {
-      "nome": "teste 2",
-      "prioridade": "media",
-      "dataLimite": "2026-11-17",
+      "nome": "criar relátorio",
+      "prioridade": "alta",
+      "data": "2026-11-13",
       "categoria": "trabalho",
       "concluida": false,
-      "id": "bOD_8Cj22e8"
+      "id": "C9mLtxAV46A"
+    },
+    {
+      "nome": "fazer compra do mês",
+      "prioridade": "media",
+      "data": "2026-11-09",
+      "categoria": "pessoal",
+      "concluida": false,
+      "id": "y4qpnYTYCxA"
+    },
+    {
+      "nome": "comprar novas roupas",
+      "prioridade": "baixa",
+      "data": "2026-11-30",
+      "categoria": "pessoal",
+      "concluida": false,
+      "id": "qzPDpBZ8kXo"
+    },
+    {
+      "nome": "estudar",
+      "prioridade": "alta",
+      "data": "2026-11-30",
+      "categoria": "pessoal",
+      "concluida": true,
+      "id": "D85W24EJTyE"
+    },
+    {
+      "nome": "limpar banheiro",
+      "data": "2026-11-10",
+      "prioridade": "alta",
+      "categoria": "pessoal",
+      "concluida": true,
+      "id": "OmzEI8PYxck"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
