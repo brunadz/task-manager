@@ -1,7 +1,5 @@
 # ✳ task manager
 
-Sua vida, só que mais organizada. 😜
-
 Um gerenciador de tarefas desenvolvido com **Angular** e **JSON Server**, feito para organizar o caos do dia a dia. Crie tarefas, defina prioridades, acompanhe prazos e mantenha tudo em seu devido lugar.
 
 ![Task Manager Preview](src/docs/task-manager-screenshot.png)
