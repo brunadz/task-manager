@@ -1,4 +1,4 @@
-## Taskmanager
+## Task Manager
 
 Gerenciador de tarefas com prioridade, categoria e data de vencimento, desenvolvido em [Angular](https://angular.dev/) com API local em JSON Server.
 
